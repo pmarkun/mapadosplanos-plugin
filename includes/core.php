@@ -2,10 +2,20 @@
 #### Custom Post Types
 global $ibge_setup, $ficha_setup;
 $ibge_setup = array(
-	'A187' => 'Possui plano?',
-	'A171' => 'Sistema Municipal de Ensino',
-	'A219' => 'Fundo Municipal de Educação',
-	'A211' => 'Conselho Municipal de Educação'
+	    'A187' => 'Possui Plano',
+	    'A171' => 'Instâncias de Gestão Democrática<br />Sistema Municipal de Ensino',
+	    'A219' => 'Fundo Municipal de Educação',
+	    'A211' => 'Conselho Municipal de Educação',
+	    'A181' => 'Conselho de Controle e Acompanhamento Social do FUNDEF',
+	    'A182' => 'Conselhos Escolares',
+	    'A183' => 'Conselho de Alimentação Escolar',
+	    'A184' => 'Conselho do Transporte Escolar',
+	    'A188' => 'O Plano Municipal de Educação incorpora educação em direitos humanos no currículo?',
+	    'A189' => 'Na rede municipal de ensino existe capacitação de professores em:<br />Direitos Humanos',
+	    'A190' => 'Gênero',
+	    'A191' => 'Raça/etnia',
+	    'A192' => 'Orientação Sexual',
+	    'A194' => 'Na rede municipal de ensino existem escolas aptas a receber pessoas com deficiência?'
 	);
 
 
@@ -55,8 +65,8 @@ function municipio_register() {
 
 /* Create one or more meta boxes to be displayed on the post editor screen. */
 function add_municipio_metaboxes() {
-	 add_meta_box('post-municipio-ibge', 'Munic IBGE', 'municipio_post_ibge_metabox', 'municipio', 'normal', 'default');
-	 add_meta_box('post-municipio-ficha', 'Ficha do Munícipio', 'municipio_post_ficha_metabox', 'municipio', 'normal', 'default');
+	 add_meta_box('post-municipio-ibge', 'Munic IBGE', 'municipio_post_ibge_metabox', 'municipio', 'advanced', 'high');
+	 add_meta_box('post-municipio-ficha', 'Ficha do Munícipio', 'municipio_post_ficha_metabox', 'municipio', 'normal', 'high');
 	 remove_meta_box( 'slugdiv', 'municipio', 'normal' );
 	 remove_meta_box( 'submitdiv', 'municipio', 'normal' );
 }
@@ -77,7 +87,7 @@ function municipio_post_ibge_metabox( $object, $box ) {
 	
 	
     // Echo cria o field
-    echo '<p>Possui plano?</p>';
+    /*** echo '<p>Possui plano?</p>';
     echo '<input type="text" name="A187" value="' . $ibge_results['A187']  . '" class="widefat" />';
     echo '<p>Instâncias de Gestão Democrática</p>';
     echo '<p>Sistema Municipal de Ensino</p>';
@@ -86,6 +96,12 @@ function municipio_post_ibge_metabox( $object, $box ) {
     echo '<input type="text" name="A219" value="' . $ibge_results['A219']  . '" class="widefat" />';
     echo '<p>Conselho Municipal de Educação</p>';
     echo '<input type="text" name="A211" value="' . $ibge_results['A211']  . '" class="widefat" />';
+    ***/
+    foreach ($ibge_setup as $key => $value) {
+	  echo "<p>" . $value . "</p>";
+	  echo "<input type='text' name='" . $key . "' value='" . $ibge_results[$key] . "' class='widefat' />";
+	}
+    
 }
 
 // Save the Metabox Data
