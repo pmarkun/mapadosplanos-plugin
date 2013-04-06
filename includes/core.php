@@ -1,74 +1,158 @@
 <?
-#### Custom Post Types
-/* Antigo sistema de Custom Fields - substituido pelo plugin Types */
-/*
-global $ibge_setup, $ficha_setup;
-$ibge_setup = array(
-	    'A187' => 'Possui Plano',
-	    'A171' => 'Instâncias de Gestão Democrática<br />Sistema Municipal de Ensino',
-	    'A219' => 'Fundo Municipal de Educação',
-	    'A211' => 'Conselho Municipal de Educação',
-	    'A181' => 'Conselho de Controle e Acompanhamento Social do FUNDEF',
-	    'A182' => 'Conselhos Escolares',
-	    'A183' => 'Conselho de Alimentação Escolar',
-	    'A184' => 'Conselho do Transporte Escolar',
-	    'A188' => 'O Plano Municipal de Educação incorpora educação em direitos humanos no currículo?',
-	    'A189' => 'Na rede municipal de ensino existe capacitação de professores em:<br />Direitos Humanos',
-	    'A190' => 'Gênero',
-	    'A191' => 'Raça/etnia',
-	    'A192' => 'Orientação Sexual',
-	    'A194' => 'Na rede municipal de ensino existem escolas aptas a receber pessoas com deficiência?'
-	);
+function mapadosplanos_select_questionarios($post_id) {
+   global $wpdb;
+   global $db;
+
+   $quests = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "mapadosplanos_quest WHERE post_id = " . $post_id);
+
+   // Echo the title of the first scheduled post
+   return $quests;
+   }
+
+function mapadosplanos_submit_form($post_id) { 
+
+	if(isset($_POST['submit']) and $_POST['action']=='questionario'):
+	    //implementar check if recaptcha
+	    global $wpdb;
+    	
+    	$p = $_POST;
+    	$p['qs_03'] = maybe_serialize($p['qs_03']);
+    	$p['qs_04'] = maybe_serialize($p['qs_04']);
+
+    	$sql = $wpdb->prepare("INSERT INTO wp_mapadosplanos_quest 
+    		(id, post_id, qs_nome, qs_relacao, qs_relacao_obs, qs_conselho, qs_conselho_obs, qs_email, qs_telefone,
+    		 qs_01, qs_01_1, qs_01_obs, qs_02, qs_02_obs, qs_03, qs_04, qs_obs) 
+    		values (NULL, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+    		 $p['post_id'], $p['qs_nome'], $p['qs_relacao'], $p['qs_relacao_obs'], $p['qs_conselho'], $p['qs_conselho_obs'], $p['qs_email'], $p['qs_telefone'],
+    		 $p['qs_01'], $p['qs_01_1'], $p['qs_01_obs'], $p['qs_02'], $p['qs_02_obs'], $p['qs_03'], $p['qs_04'], $p['qs_obs']);
+    	
+    		$wpdb->query($sql);
+    	?>
+	<?php else: ?>
+	
+		<form method="POST" action="" name="questionario_submit" enctype="multipart/form-data"> 
+		<label for="nome">Nome da pessoa responsável pelo preenchimento:</label>
+		<input type="hidden" name="post_id" value="<?php echo $post_id ?>">
+		<input type="text" name="qs_nome" value="">
+		<fieldset>
+			<legend>Qual sua relação com a educação?</legend>
+		<input type="radio" name="qs_relacao" value="Pai/mãe ou responsável">Pai/mãe ou responsável</input>
+		<input type="radio" name="qs_relacao" value="Estudante">Estudante</input>
+		<input type="radio" name="qs_relacao" value="Professor(a)">Professor(a)</input>
+		<input type="radio" name="qs_relacao" value="Coordenador(a)">Coordenador(a)</input>
+		<input type="text" name="qs_relacao_obs" value="">Qual?</input>
+		</fieldset>
+		<fieldset>
+			<legend>Participa ou já participou de algum conselho</legend>
+			<input type="radio" name="qs_conselho" value="Sim">Sim</input>
+			<input type="radio" name="qs_conselho" value="Não">Não</input>
+			<input type="text" name="qs_conselho_obs" value="">Qual?</input>
+		</fieldset>
+		<input type="text" name="qs_email" value="">Email</input>
+		<input type="text" name="qs_telefone" value="">Telefone</input>
+
+		<fieldset>
+			<legend>1. Seu município tem Plano de Educação?</legend>
+			<input type="radio" name="qs_01" value="Sim">Sim</input>
+			<input type="radio" name="qs_01" value="Não">Não</input>
+			<input type="radio" name="qs_01" value="Em elaboração">Em elaboração</input>
+			<input type="radio" name="qs_01" value="Não sabe">Não sabe</input>
+		</fieldset>
+
+		<fieldset>
+			<legend>1.1. Se sim ou em elaboração:
+					Você participa ou participou do processo de construção do Plano?</legend>
+			<input type="radio" name="qs_01_1" value="Sim">Sim</input>
+			<input type="radio" name="qs_01_1" value="Não">Não</input>
+			<input type="text" name="qs_01_obs" value="">Como?</input>
+		</fieldset>
+
+		<fieldset>
+			<legend>2. Segundo a sua opinião, em que medida um Plano de Educação pode ajudar a melhorar a educação em seu município? Dê uma nota de 0 a 5 para
+cada uma das possibilidades apresentadas abaixo, sendo 5 quando o Plano tem grande capacidade de realizar o que está dito e 0 quando o Plano
+não interfere no aspecto mencionado.</legend>
+		<label for="qs_02_1">Permite que boas iniciativas de uma gestão governamental perdurem entre diferentes mandatos</label>
+		<select name="qs_02_1">
+			<option>1</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+		<label for="qs_02_2">Colabora com a construção de parcerias e articulações entre as escolas de diferentes redes no município (municipal, estadual e federal)</label>
+		<select name="qs_02_2">
+			<option>1</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+		<label for="qs_02_3">Permite identificar os problemas a serem enfrentados, ao se realizar um estudo/diagnóstico sobre a situação educacional local</label>
+		<select name="qs_02_3">
+			<option>1</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+		<label for="qs_02_4">Permite o acompanhamento e fiscalização do cumprimento dos objetivos e metas presentes no Plano de Educação</label>
+		<select name="qs_02_4">
+			<option>1</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+		<label for="qs_02_5">Possibilita a participação das escolas (professores/as, funcionários/as, alunos/as e pais) na definição dos rumos da política educacional local</label>
+		<select name="qs_02_5">
+			<option>1</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+		<input type="text" name="qs_02_obs" value="">Outros?</input>
+		</fieldset>
 
 
-$ficha_setup = array(
-    'Q1' => '1. Seu município possui plano de educação em vigência?',
-    'Q2' => '2. Quando o plano de educação foi aprovado?',
-    'Q3' => '3. O plano de educação já foi revisado nos últimos quatro anos?',
-    'Q4' => '4. Seu município está elaborando um plano de educação? [Somente para quem respondeu Não na pergunta 01]',
-    'Q5' => '5. Seu município pretende elaborar um plano de educação nesta gestão (2013-2016)? [Somente para quem respondeu Sim na pergunta 04]',
-    'Q6' => '6. Seu município pretende revisar o plano de educação nesta gestão (2013-2016)? [Somente para quem já tem plano]',
-    'Q7' => '7. Em qual momento da elaboração se encontra? (Somente para os munícipios que estão em processo de elaboração do Plano de Educação)',
-    'Q8' => '8. O município contratou ou pretende contratar algum tipo de consultoria externa para elaboração do plano de educação? [Para todos]',
-    'Q9' => '9. Quais dos órgãos/instâncias abaixo participam ou participaram da elaboração do plano de educação?',
-    'Q10' => '10. Quais das organizações/movimentos abaixo participam ou participaram da elaboração do plano de educação?',
-    'Q11' => '11. Dos segmentos da comunidade escolar descritos abaixo, quais participaram ou estão participando da elaboração do plano de educação de seu município.',
-    'Q12' => '12. Quais foram ou estão sendo os dados utilizados para a elaboração do diagnóstico do município a ser utilizado no plano de educação? [Se necessário, assinale mais de uma alternativa]',
-    'Q13' => '13. Quais foram ou estão sendo as principais metodologias utilizadas para a elaboração do plano de educação de seu município?',
-    'Q14' => '14. O processo de elaboração do plano de educação mobilizou ou vem mobilizando',
-    'Q15' => '15. Houve ou há um investimento na comunicação sobre o processo de construção/revisão do Plano?',
-    'Q16' => '16. Caso positivo, a comunicação do processo se deu:',
-    'Q17' => '17. Seu município está preparado para cumprir a lei de acesso à informação pública (lei 12.527/2011) com relação à área de educação?',
-    'Q18' => '18. Além da gestão municipal, participam ou participaram do processo de construção/revisão dos Planos',
-    'Q19' => '19. A construção do plano envolveu/envolve as seguintes etapas/modalidades e níveis da educação?',
-    'Q20' => '20. Houve ou há um investimento na participação de crianças e adolescentes na construção do Plano de Educação?',
-    'Q21' => '21.  Se sim, de que forma?'
-);
-*/
-/* Fim do antigo sistema de Custom Fields */
+		<fieldset>
+			<legend>3. Escolha três aspectos que, na sua opinião, dificultam a participação da sociedade civil na construção e revisão do Plano de Educação em seu
+município:</legend>
+			<input type="checkbox" name="qs_03[]" value="Grandes distâncias e dificuldade de locomoção no município">Grandes distâncias e dificuldade de locomoção no município</input>
+			<input type="checkbox" name="qs_03[]" value="Falta de conhecimento sobre os Planos de Educação">Falta de conhecimento sobre os Planos de Educação</input>
+			<input type="checkbox" name="qs_03[]" value="Falta de tempo">Falta de tempo</input>
+			<input type="checkbox" name="qs_03[]" value="Falta de interesse">Falta de interesse</input>
+			<input type="checkbox" name="qs_03[]" value="Dificuldade de acesso à informação">Dificuldade de acesso à informação</input>
+			<input type="checkbox" name="qs_03[]" value="Falta de divulgação dos eventos relacionados ao processo de construção do Plano">Falta de divulgação dos eventos relacionados ao processo de construção do Plano</input>
+			<input type="checkbox" name="qs_03[]" value="Falta de diálogo entre as escolas e as famílias">Falta de diálogo entre as escolas e as famílias</input>
+			<input type="checkbox" name="qs_03[]" value="Falta de diálogo entre o poder público e a sociedade">Falta de diálogo entre o poder público e a sociedade</input>
+			<input type="text" name="qs_03[]" value="">Outros?</input>
+		</fieldset>
 
-add_action('init', 'municipio_register');
- 
-function municipio_register() {
-	$args = array(
-	'label' => __('Municípios'),
-	'singular_label' => __('Município'),
-	'public' => true,
-	'show_ui' => true,
-	'capability_type' => 'post',
-	'hierarchical' => false,
-	'rewrite' => false,
-	'query_var' => false,
-	'supports' => array('title'),
-	 'register_meta_box_cb' => 'add_municipio_metaboxes'
-   );
- 
-	register_post_type( 'municipio' , $args );
-}
+		<fieldset>
+			<legend>4. Escolha três aspectos que, na sua opinião, possibilitariam maior participação da sociedade civil na construção e revisão do Plano de Educação
+em seu município:</legend>
+			<input type="checkbox" name="qs_04[]" value="Reuniões na escola e/ou outros espaços públicos existentes na comunidade para discutir o que é um Plano de Educação e por que é importante participar de sua construção">Reuniões na escola e/ou outros espaços públicos existentes na comunidade para discutir o que é um Plano de Educação e por que é importante participar de sua construção</input>
+			<input type="checkbox" name="qs_04[]" value="Ampla divulgação dos eventos realizados para a construção de Planos de Educação">Ampla divulgação dos eventos realizados para a construção de Planos de Educação</input>
+			<input type="checkbox" name="qs_04[]" value="Facilitação do acesso às informações sobre a situação educacional no município">Facilitação do acesso às informações sobre a situação educacional no município</input>
+			<input type="checkbox" name="qs_04[]" value="Ações realizadas em escolas próximas à residência / local de estudo">Ações realizadas em escolas próximas à residência / local de estudo</input>
+			<input type="checkbox" name="qs_04[]" value="Apoio para transporte">Apoio para transporte</input>
+			<input type="checkbox" name="qs_04[]" value="Apoio para alimentação">Apoio para alimentação</input>
+			<input type="checkbox" name="qs_04[]" value="Apoio com o cuidado dos(as) filhos(as) durante os eventos e reuniões">Apoio com o cuidado dos(as) filhos(as) durante os eventos e reuniões</input>
+			<input type="checkbox" name="qs_04[]" value="Envolvimento da escola onde estudo ou onde o(a) filho(a) estuda no processo de construção ou revisão do Plano de Educação">Envolvimento da escola onde estudo ou onde o(a) filho(a) estuda no processo de construção ou revisão do Plano de Educação</input>
+			<input type="checkbox" name="qs_04[]" value="Envolvimento do poder público local no processo de construção ou revisão do Plano de Educação">Envolvimento do poder público local no processo de construção ou revisão do Plano de Educação</input>
+			<input type="checkbox" name="qs_04[]" value="Participação da população nos espaços destinados à construção do Plano de Educação">Participação da população nos espaços destinados à construção do Plano de Educação</input>
+			<input type="text" name="qs_04[]" value="">Outros?</input>
+		</fieldset>
 
-/* Create one or more meta boxes to be displayed on the post editor screen. */
-function add_municipio_metaboxes() {
-	 remove_meta_box( 'slugdiv', 'municipio', 'normal' );
-	 remove_meta_box( 'submitdiv', 'municipio', 'normal' );
-}
+			<input type="text" name="qs_obs" value=""></input>
+
+		<input type="hidden" name="action" value="questionario" />
+		<input type="submit" name="submit" value="Enviar"/>
+		</form>
+	
+	<?php endif;
+	}
+	
+	add_shortcode( 'mapadosplanos_submit_form', 'mapadosplanos_submit_form' );
 ?>
