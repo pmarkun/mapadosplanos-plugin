@@ -10,24 +10,41 @@ function mapadosplanos_select_questionarios($post_id) {
    }
 
 function mapadosplanos_submit_form($post_id) { 
-
+	if (!function_exists('recaptcha_get_html')) {
+		die("Plugin <a href='https://github.com/blaenk/wp-recaptcha'>reCapcha</a> não instalado.");
+	}
+	//performance sofrivel?
+	$recaptcha =  wp_load_alloptions();
+	$recaptcha =  unserialize($recaptcha['recaptcha_options']);
 	if(isset($_POST['submit']) and $_POST['action']=='questionario'):
 	    //implementar check if recaptcha
-	    global $wpdb;
-    	
-    	$p = $_POST;
-    	$p['qs_03'] = maybe_serialize($p['qs_03']);
-    	$p['qs_04'] = maybe_serialize($p['qs_04']);
+  		$resp = recaptcha_check_answer ($recaptcha['private_key'],
+                                $_SERVER["REMOTE_ADDR"],
+                                $_POST["recaptcha_challenge_field"],
+                                $_POST["recaptcha_response_field"]);
 
-    	$sql = $wpdb->prepare("INSERT INTO wp_mapadosplanos_quest 
-    		(id, post_id, qs_nome, qs_relacao, qs_relacao_obs, qs_conselho, qs_conselho_obs, qs_email, qs_telefone,
-    		 qs_01, qs_01_1, qs_01_obs, qs_02, qs_02_obs, qs_03, qs_04, qs_obs) 
-    		values (NULL, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-    		 $p['post_id'], $p['qs_nome'], $p['qs_relacao'], $p['qs_relacao_obs'], $p['qs_conselho'], $p['qs_conselho_obs'], $p['qs_email'], $p['qs_telefone'],
-    		 $p['qs_01'], $p['qs_01_1'], $p['qs_01_obs'], $p['qs_02'], $p['qs_02_obs'], $p['qs_03'], $p['qs_04'], $p['qs_obs']);
+  		if (!$resp->is_valid) {
+			die ("O reCAPTCHA deu um problema. Tente novamente!" .
+         		"(Erro: " . $resp->error . ")");
+  		}
+  		else {
+	    	global $wpdb;
     	
-    		$wpdb->query($sql);
-    	?>
+    		$p = $_POST;
+    		$p['qs_03'] = maybe_serialize($p['qs_03']);
+    		$p['qs_04'] = maybe_serialize($p['qs_04']);
+
+    		$sql = $wpdb->prepare("INSERT INTO wp_mapadosplanos_quest 
+    			(id, post_id, qs_nome, qs_relacao, qs_relacao_obs, qs_conselho, qs_conselho_obs, qs_email, qs_telefone,
+    		 	qs_01, qs_01_1, qs_01_obs, qs_02, qs_02_obs, qs_03, qs_04, qs_obs) 
+    			values (NULL, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+    		 	$p['post_id'], $p['qs_nome'], $p['qs_relacao'], $p['qs_relacao_obs'], $p['qs_conselho'], $p['qs_conselho_obs'], $p['qs_email'], $p['qs_telefone'],
+    		 	$p['qs_01'], $p['qs_01_1'], $p['qs_01_obs'], $p['qs_02'], $p['qs_02_obs'], $p['qs_03'], $p['qs_04'], $p['qs_obs']);
+    	
+    			$wpdb->query($sql);
+    		}
+    		echo "<b>Obrigado!</b>";
+    		?>
 	<?php else: ?>
 	
 		<form method="POST" action="" name="questionario_submit" enctype="multipart/form-data"> 
@@ -148,6 +165,12 @@ em seu município:</legend>
 			<input type="text" name="qs_obs" value=""></input>
 
 		<input type="hidden" name="action" value="questionario" />
+	<?php 
+		//RecaptchaLib
+        echo recaptcha_get_html($recaptcha['public_key']);
+	?>
+
+
 		<input type="submit" name="submit" value="Enviar"/>
 		</form>
 	
