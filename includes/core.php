@@ -43,51 +43,83 @@ function mapadosplanos_submit_form($post_id) {
     	
     			$wpdb->query($sql);
     		}
-    		echo "<b>Obrigado!</b>";
+    		echo "<span class='titulo'>Agradecemos a sua participação!</span><br>Seu questionário foi registrado no banco de dados do <b>De Olho nos Planos</b>.<br>Continue monitorando o Plano de Educação do seu município.";
     		?>
 	<?php else: ?>
 	
 		<form method="POST" action="" name="questionario_submit" enctype="multipart/form-data"> 
-		<label for="nome">Nome da pessoa responsável pelo preenchimento:</label>
-		<input type="hidden" name="post_id" value="<?php echo $post_id ?>">
-		<input type="text" name="qs_nome" value="">
+		<span class="titulo">Questionário para membros da sociedade civil</span><br><span>Preencha com informações sobre o processo do Plano de Educação no seu município</a></span><hr>
+		
+		<fieldset>
+			<label for="nome">Nome da pessoa responsável pelo preenchimento:</label>
+			<input type="hidden" name="post_id" value="<?php echo $post_id ?>">
+			<input type="text" name="qs_nome" value="">
+		</fieldset>
+		<fieldset>
+			<label for="qs_email">Email:</label>
+			<input type="text" name="qs_email" value="">
+
+			<label for="qs_telefone">Telefone:</label>
+			<input type="text" name="qs_telefone" value="">
+		</fieldset>
+
 		<fieldset>
 			<legend>Qual sua relação com a educação?</legend>
-		<input type="radio" name="qs_relacao" value="Pai/mãe ou responsável">Pai/mãe ou responsável</input>
-		<input type="radio" name="qs_relacao" value="Estudante">Estudante</input>
-		<input type="radio" name="qs_relacao" value="Professor(a)">Professor(a)</input>
-		<input type="radio" name="qs_relacao" value="Coordenador(a)">Coordenador(a)</input>
-		<input type="text" name="qs_relacao_obs" value="">Qual?</input>
+		
+			<label for="qs_relacao_1"><input type="radio" name="qs_relacao" value="Pai/mãe ou responsável">Pai/mãe ou responsável</label>
+			
+			<label for="qs_relacao_2"><input type="radio" name="qs_relacao" value="Estudante">Estudante</label>
+		
+			<label for="qs_relacao_3"><input type="radio" name="qs_relacao" value="Professor(a)">Professor(a)</label>
+		
+			<label for="qs_relacao_4"><input type="radio" name="qs_relacao" value="Coordenador(a)">Coordenador(a)</label>
+		
+			<label for="qs_relacao_obs">Outra. Qual?</label>
+			<input type="text" name="qs_relacao_obs" value="">
 		</fieldset>
+		
 		<fieldset>
 			<legend>Participa ou já participou de algum conselho</legend>
-			<input type="radio" name="qs_conselho" value="Sim">Sim</input>
-			<input type="radio" name="qs_conselho" value="Não">Não</input>
-			<input type="text" name="qs_conselho_obs" value="">Qual?</input>
+			
+			<label for"qs_conselho_1"><input type="radio" name="qs_conselho" value="Sim">Sim</label>
+			
+			<label for"qs_conselho_2"><input type="radio" name="qs_conselho" value="Não">Não</label>
+			
+			<label for"qs_conselho_obs">Em caso afirmativo, de qual?</label>
+			<input type="text" name="qs_conselho_obs" value="">
 		</fieldset>
-		<input type="text" name="qs_email" value="">Email</input>
-		<input type="text" name="qs_telefone" value="">Telefone</input>
+		<hr>
+
 
 		<fieldset>
-			<legend>1. Seu município tem Plano de Educação?</legend>
-			<input type="radio" name="qs_01" value="Sim">Sim</input>
-			<input type="radio" name="qs_01" value="Não">Não</input>
-			<input type="radio" name="qs_01" value="Em elaboração">Em elaboração</input>
-			<input type="radio" name="qs_01" value="Não sabe">Não sabe</input>
+			<legend>Seu município tem Plano de Educação?</legend>
+			
+			<label for="qs_01_r1"><input type="radio" name="qs_01" value="Sim">Sim</label>
+						
+			<label for="qs_01_r2"><input type="radio" name="qs_01" value="Não">Não</label>
+			
+			<label for="qs_01_r3"><input type="radio" name="qs_01" value="Em elaboração">Em elaboração</label>
+			
+			<label for="qs_01_r4"><input type="radio" name="qs_01" value="Não sabe">Não sabe</label>
 		</fieldset>
 
 		<fieldset>
-			<legend>1.1. Se sim ou em elaboração:
-					Você participa ou participou do processo de construção do Plano?</legend>
-			<input type="radio" name="qs_01_1" value="Sim">Sim</input>
-			<input type="radio" name="qs_01_1" value="Não">Não</input>
-			<input type="text" name="qs_01_obs" value="">Como?</input>
+			<legend>Se sim ou em elaboração: você participa ou participou do processo de construção do Plano?</legend>
+				
+				<label for="qs_01_1_r1"><input type="radio" name="qs_01_1" value="Sim">Sim</label>
+				
+				
+				<label for="qs_01_1_r2"><input type="radio" name="qs_01_1" value="Não">Não</label>
+				
+				<label for="qs_01_obs">Em caso afirmativo, como?</label>
+				<input type="text" name="qs_01_obs" value="">
 		</fieldset>
+		<hr>
 
 		<fieldset>
-			<legend>2. Segundo a sua opinião, em que medida um Plano de Educação pode ajudar a melhorar a educação em seu município? Dê uma nota de 0 a 5 para
-cada uma das possibilidades apresentadas abaixo, sendo 5 quando o Plano tem grande capacidade de realizar o que está dito e 0 quando o Plano
-não interfere no aspecto mencionado.</legend>
+			<legend>Segundo a sua opinião, em que medida um Plano de Educação pode ajudar a melhorar a educação em seu município?</legend> 
+			<div class="form-info">Dê uma nota de 0 a 5 para cada uma das possibilidades apresentadas abaixo, sendo 5 quando o Plano tem grande capacidade de realizar o que está dito, e 0 quando o Plano não interfere no aspecto mencionado.</div>
+			
 		<label for="qs_02_1">Permite que boas iniciativas de uma gestão governamental perdurem entre diferentes mandatos</label>
 		<select name="qs_02_1">
 			<option>1</option>
@@ -96,6 +128,7 @@ não interfere no aspecto mencionado.</legend>
 			<option>4</option>
 			<option>5</option>
 		</select>
+		
 		<label for="qs_02_2">Colabora com a construção de parcerias e articulações entre as escolas de diferentes redes no município (municipal, estadual e federal)</label>
 		<select name="qs_02_2">
 			<option>1</option>
@@ -104,6 +137,7 @@ não interfere no aspecto mencionado.</legend>
 			<option>4</option>
 			<option>5</option>
 		</select>
+		
 		<label for="qs_02_3">Permite identificar os problemas a serem enfrentados, ao se realizar um estudo/diagnóstico sobre a situação educacional local</label>
 		<select name="qs_02_3">
 			<option>1</option>
@@ -112,6 +146,7 @@ não interfere no aspecto mencionado.</legend>
 			<option>4</option>
 			<option>5</option>
 		</select>
+		
 		<label for="qs_02_4">Permite o acompanhamento e fiscalização do cumprimento dos objetivos e metas presentes no Plano de Educação</label>
 		<select name="qs_02_4">
 			<option>1</option>
@@ -120,6 +155,7 @@ não interfere no aspecto mencionado.</legend>
 			<option>4</option>
 			<option>5</option>
 		</select>
+		
 		<label for="qs_02_5">Possibilita a participação das escolas (professores/as, funcionários/as, alunos/as e pais) na definição dos rumos da política educacional local</label>
 		<select name="qs_02_5">
 			<option>1</option>
@@ -128,41 +164,64 @@ não interfere no aspecto mencionado.</legend>
 			<option>4</option>
 			<option>5</option>
 		</select>
-		<input type="text" name="qs_02_obs" value="">Outros?</input>
+		
+		<label for="qs_02_obs">Outros?</label>
+		<input type="text" name="qs_02_obs" value="">
 		</fieldset>
+		<hr>
 
 
 		<fieldset>
-			<legend>3. Escolha três aspectos que, na sua opinião, dificultam a participação da sociedade civil na construção e revisão do Plano de Educação em seu
-município:</legend>
-			<input type="checkbox" name="qs_03[]" value="Grandes distâncias e dificuldade de locomoção no município">Grandes distâncias e dificuldade de locomoção no município</input>
-			<input type="checkbox" name="qs_03[]" value="Falta de conhecimento sobre os Planos de Educação">Falta de conhecimento sobre os Planos de Educação</input>
-			<input type="checkbox" name="qs_03[]" value="Falta de tempo">Falta de tempo</input>
-			<input type="checkbox" name="qs_03[]" value="Falta de interesse">Falta de interesse</input>
-			<input type="checkbox" name="qs_03[]" value="Dificuldade de acesso à informação">Dificuldade de acesso à informação</input>
-			<input type="checkbox" name="qs_03[]" value="Falta de divulgação dos eventos relacionados ao processo de construção do Plano">Falta de divulgação dos eventos relacionados ao processo de construção do Plano</input>
-			<input type="checkbox" name="qs_03[]" value="Falta de diálogo entre as escolas e as famílias">Falta de diálogo entre as escolas e as famílias</input>
-			<input type="checkbox" name="qs_03[]" value="Falta de diálogo entre o poder público e a sociedade">Falta de diálogo entre o poder público e a sociedade</input>
-			<input type="text" name="qs_03[]" value="">Outros?</input>
+			<legend>Escolha três aspectos que, na sua opinião, dificultam a participação da sociedade civil na construção e revisão do Plano de Educação em seu município:</legend>
+			
+			<label for="qs_03_1"><input type="checkbox" name="qs_03[]" value="Grandes distâncias e dificuldade de locomoção no município">Grandes distâncias e dificuldade de locomoção no município</label>
+			
+			<label for="qs_03_2"><input type="checkbox" name="qs_03[]" value="Falta de conhecimento sobre os Planos de Educação">Falta de conhecimento sobre os Planos de Educação</label>
+			
+			<label for="qs_03_3"><input type="checkbox" name="qs_03[]" value="Falta de tempo">Falta de tempo</label>
+			
+			<label for="qs_03_4"><input type="checkbox" name="qs_03[]" value="Falta de interesse">Falta de interesse</label>
+			
+			<label for="qs_03_5"><input type="checkbox" name="qs_03[]" value="Dificuldade de acesso à informação">Dificuldade de acesso à informação</label>
+			
+			<label for="qs_03_6"><input type="checkbox" name="qs_03[]" value="Falta de divulgação dos eventos relacionados ao processo de construção do Plano">Falta de divulgação dos eventos relacionados ao processo de construção do Plano</label>
+			
+			<label for="qs_03_7"><input type="checkbox" name="qs_03[]" value="Falta de diálogo entre as escolas e as famílias">Falta de diálogo entre as escolas e as famílias</label>
+			
+			<label for="qs_03_8"><input type="checkbox" name="qs_03[]" value="Falta de diálogo entre o poder público e a sociedade">Falta de diálogo entre o poder público e a sociedade</label>
+			
+			<label for="qs_03_obs">Outros?</label>
+			<input type="text" name="qs_03_obs" value="">
 		</fieldset>
+		<hr>
 
 		<fieldset>
-			<legend>4. Escolha três aspectos que, na sua opinião, possibilitariam maior participação da sociedade civil na construção e revisão do Plano de Educação
-em seu município:</legend>
-			<input type="checkbox" name="qs_04[]" value="Reuniões na escola e/ou outros espaços públicos existentes na comunidade para discutir o que é um Plano de Educação e por que é importante participar de sua construção">Reuniões na escola e/ou outros espaços públicos existentes na comunidade para discutir o que é um Plano de Educação e por que é importante participar de sua construção</input>
-			<input type="checkbox" name="qs_04[]" value="Ampla divulgação dos eventos realizados para a construção de Planos de Educação">Ampla divulgação dos eventos realizados para a construção de Planos de Educação</input>
-			<input type="checkbox" name="qs_04[]" value="Facilitação do acesso às informações sobre a situação educacional no município">Facilitação do acesso às informações sobre a situação educacional no município</input>
-			<input type="checkbox" name="qs_04[]" value="Ações realizadas em escolas próximas à residência / local de estudo">Ações realizadas em escolas próximas à residência / local de estudo</input>
-			<input type="checkbox" name="qs_04[]" value="Apoio para transporte">Apoio para transporte</input>
-			<input type="checkbox" name="qs_04[]" value="Apoio para alimentação">Apoio para alimentação</input>
-			<input type="checkbox" name="qs_04[]" value="Apoio com o cuidado dos(as) filhos(as) durante os eventos e reuniões">Apoio com o cuidado dos(as) filhos(as) durante os eventos e reuniões</input>
-			<input type="checkbox" name="qs_04[]" value="Envolvimento da escola onde estudo ou onde o(a) filho(a) estuda no processo de construção ou revisão do Plano de Educação">Envolvimento da escola onde estudo ou onde o(a) filho(a) estuda no processo de construção ou revisão do Plano de Educação</input>
-			<input type="checkbox" name="qs_04[]" value="Envolvimento do poder público local no processo de construção ou revisão do Plano de Educação">Envolvimento do poder público local no processo de construção ou revisão do Plano de Educação</input>
-			<input type="checkbox" name="qs_04[]" value="Participação da população nos espaços destinados à construção do Plano de Educação">Participação da população nos espaços destinados à construção do Plano de Educação</input>
-			<input type="text" name="qs_04[]" value="">Outros?</input>
-		</fieldset>
+			<legend>Escolha três aspectos que, na sua opinião, possibilitariam maior participação da sociedade civil na construção e revisão do Plano de Educação em seu município:</legend>
+			
+			<label for="qs_04_1"><input type="checkbox" name="qs_04[]" value="Reuniões na escola e/ou outros espaços públicos existentes na comunidade para discutir o que é um Plano de Educação e por que é importante participar de sua construção">Reuniões na escola e/ou outros espaços públicos existentes na comunidade para discutir o que é um Plano de Educação e por que é importante participar de sua construção</label>
+			
+			<label for="qs_04_2"><input type="checkbox" name="qs_04[]" value="Ampla divulgação dos eventos realizados para a construção de Planos de Educação">Ampla divulgação dos eventos realizados para a construção de Planos de Educação</label>
 
-			<input type="text" name="qs_obs" value=""></input>
+			<label for="qs_04_3"><input type="checkbox" name="qs_04[]" value="Facilitação do acesso às informações sobre a situação educacional no município">Facilitação do acesso às informações sobre a situação educacional no município</label>
+			
+			<label for="qs_04_4"><input type="checkbox" name="qs_04[]" value="Ações realizadas em escolas próximas à residência / local de estudo">Ações realizadas em escolas próximas à residência / local de estudo</label>
+			
+			<label for="qs_04_5"><input type="checkbox" name="qs_04[]" value="Apoio para transporte">Apoio para transporte</label>
+			
+			<label for="qs_04_6"><input type="checkbox" name="qs_04[]" value="Apoio para alimentação">Apoio para alimentação</label>
+			
+			<label for="qs_04_7"><input type="checkbox" name="qs_04[]" value="Apoio com o cuidado dos(as) filhos(as) durante os eventos e reuniões">Apoio com o cuidado dos(as) filhos(as) durante os eventos e reuniões</label>
+			
+			<label for="qs_04_8"><input type="checkbox" name="qs_04[]" value="Envolvimento da escola onde estudo ou onde o(a) filho(a) estuda no processo de construção ou revisão do Plano de Educação">Envolvimento da escola onde estudo ou onde o(a) filho(a) estuda no processo de construção ou revisão do Plano de Educação</label>
+			
+			<label for="qs_04_9"><input type="checkbox" name="qs_04[]" value="Envolvimento do poder público local no processo de construção ou revisão do Plano de Educação">Envolvimento do poder público local no processo de construção ou revisão do Plano de Educação</label>
+			
+			<label for="qs_04_10"><input type="checkbox" name="qs_04[]" value="Participação da população nos espaços destinados à construção do Plano de Educação">Participação da população nos espaços destinados à construção do Plano de Educação</label>
+			
+			<label for="qs_04_obs">Outros?</label>
+			<input type="text" name="qs_04_obs" value="">
+		</fieldset>
+		<hr>
 
 		<input type="hidden" name="action" value="questionario" />
 	<?php 
@@ -171,7 +230,7 @@ em seu município:</legend>
 	?>
 
 
-		<input type="submit" name="submit" value="Enviar"/>
+		<input type="submit" name="submit" value="Enviar questionário"/>
 		</form>
 	
 	<?php endif;
