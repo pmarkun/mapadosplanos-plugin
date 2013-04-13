@@ -1,4 +1,21 @@
 <?
+function get_meta_count( $key = '', $value = '', $type = 'post', $status = 'publish' ) {
+    global $wpdb;
+    // Example code only
+    // Good idea to add your own arg checking here
+    if( empty( $key ) )
+        return;
+    $r = $wpdb->get_var( $wpdb->prepare( "
+        SELECT COUNT(*) as count FROM {$wpdb->postmeta} pm
+        LEFT JOIN {$wpdb->posts} p ON p.ID = pm.post_id 
+        WHERE pm.meta_key = '%s' 
+        AND pm.meta_value = '%s'
+        AND p.post_status = '%s' 
+        AND p.post_type = '%s'
+    ", $key, $value, $status, $type ) );
+    return $r;
+}
+
 function mapadosplanos_select_questionarios($post_id) {
    global $wpdb;
    global $db;
@@ -237,4 +254,26 @@ function mapadosplanos_submit_form($post_id) {
 	}
 	
 	add_shortcode( 'mapadosplanos_submit_form', 'mapadosplanos_submit_form' );
+
+	function mapadosplanos_count( $atts ){
+ 		extract( shortcode_atts( array(
+			'etapa' => 'todas',
+		), $atts ) );
+		if ($etapa == 'complano') {
+			return get_meta_count('wpcf-qs_etapa01', 'Sim', 'municipio');
+		}
+		else if ($etapa == 'elaboracao') {
+			return get_meta_count('wpcf-qs_etapa01', 'Elaboração', 'municipio');
+		}
+		else if ($etapa == 'semplano') {
+			return get_meta_count('wpcf-qs_etapa01', 'Não', 'municipio');
+		}
+		else {
+			return 0;
+		}
+	}
+	add_shortcode( 'mapa_respostas', 'mapadosplanos_count' );
+	add_filter( 'widget_text', 'shortcode_unautop');
+	add_filter('widget_text', 'do_shortcode');
+
 ?>
