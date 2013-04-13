@@ -46,11 +46,6 @@ function mapadosplanos_submit_form($post_id) {
   		}
   		else {
   			global $wpdb;
-  			print_r($wpdb->prepare( "
-        		SELECT COUNT(*) as count FROM {$wpdb->prefix}mapadosplanos_quest
-        		WHERE `qs_cpf` = '%s' 
-        		AND `post_id` = '%d'
-    			", $_POST['qs_cpf'], $_POST['post_id'] ));
   			$r = $wpdb->get_var( $wpdb->prepare( "
         		SELECT COUNT(*) as count FROM {$wpdb->prefix}mapadosplanos_quest
         		WHERE `qs_cpf` = '%s' 
