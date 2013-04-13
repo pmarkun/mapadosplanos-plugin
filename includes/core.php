@@ -45,22 +45,37 @@ function mapadosplanos_submit_form($post_id) {
          		"(Erro: " . $resp->error . ")");
   		}
   		else {
-	    	global $wpdb;
-    	
-    		$p = $_POST;
-    		$p['qs_03'] = maybe_serialize($p['qs_03']);
-    		$p['qs_04'] = maybe_serialize($p['qs_04']);
+  			global $wpdb;
+  			print_r($wpdb->prepare( "
+        		SELECT COUNT(*) as count FROM {$wpdb->prefix}mapadosplanos_quest
+        		WHERE `qs_cpf` = '%s' 
+        		AND `post_id` = '%d'
+    			", $_POST['qs_cpf'], $_POST['post_id'] ));
+  			$r = $wpdb->get_var( $wpdb->prepare( "
+        		SELECT COUNT(*) as count FROM {$wpdb->prefix}mapadosplanos_quest
+        		WHERE `qs_cpf` = '%s' 
+        		AND `post_id` = %d
+    			", $_POST['qs_cpf'], $_POST['post_id'] ) );
+    		if ($r != 0) {
+    			echo "Você já respondeu esse questionario. Obrigado!";
+    		}
+    		
+    		else {
+    			$p = $_POST;
+    			$p['qs_03'] = maybe_serialize($p['qs_03']);
+    			$p['qs_04'] = maybe_serialize($p['qs_04']);
 
-    		$sql = $wpdb->prepare("INSERT INTO wp_mapadosplanos_quest 
-    			(id, post_id, qs_nome, qs_relacao, qs_relacao_obs, qs_conselho, qs_conselho_obs, qs_email, qs_telefone,
-    		 	qs_01, qs_01_1, qs_01_obs, qs_02, qs_02_obs, qs_03, qs_04, qs_obs) 
-    			values (NULL, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-    		 	$p['post_id'], $p['qs_nome'], $p['qs_relacao'], $p['qs_relacao_obs'], $p['qs_conselho'], $p['qs_conselho_obs'], $p['qs_email'], $p['qs_telefone'],
-    		 	$p['qs_01'], $p['qs_01_1'], $p['qs_01_obs'], $p['qs_02'], $p['qs_02_obs'], $p['qs_03'], $p['qs_04'], $p['qs_obs']);
+    			$sql = $wpdb->prepare("INSERT INTO wp_mapadosplanos_quest 
+    				(id, post_id, qs_nome, qs_cpf, qs_relacao, qs_relacao_obs, qs_conselho, qs_conselho_obs, qs_email, qs_telefone,
+    		 		qs_01, qs_01_1, qs_01_obs, qs_02, qs_02_obs, qs_03, qs_04, qs_obs) 
+    				values (NULL, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+    		 		$p['post_id'], $p['qs_nome'], $p['qs_cpf'], $p['qs_relacao'], $p['qs_relacao_obs'], $p['qs_conselho'], $p['qs_conselho_obs'], $p['qs_email'], $p['qs_telefone'],
+    		 		$p['qs_01'], $p['qs_01_1'], $p['qs_01_obs'], $p['qs_02'], $p['qs_02_obs'], $p['qs_03'], $p['qs_04'], $p['qs_obs']);
     	
     			$wpdb->query($sql);
+    			echo "<span class='titulo'>Agradecemos a sua participação!</span><br>Seu questionário foi registrado no banco de dados do <b>De Olho nos Planos</b>.<br>Continue monitorando o Plano de Educação do seu município.";
     		}
-    		echo "<span class='titulo'>Agradecemos a sua participação!</span><br>Seu questionário foi registrado no banco de dados do <b>De Olho nos Planos</b>.<br>Continue monitorando o Plano de Educação do seu município.";
+		}	
     		?>
 	<?php else: ?>
 	
@@ -68,9 +83,13 @@ function mapadosplanos_submit_form($post_id) {
 		<span class="titulo">Questionário para membros da sociedade civil</span><br><span>Preencha com informações sobre o processo do Plano de Educação no seu município</a></span><hr>
 		
 		<fieldset>
-			<label for="nome">Nome da pessoa responsável pelo preenchimento:</label>
+			<label for="qs_nome">Nome da pessoa responsável pelo preenchimento:</label>
 			<input type="hidden" name="post_id" value="<?php echo $post_id ?>">
 			<input type="text" name="qs_nome" value="">
+		</fieldset>
+		<fieldset>
+			<label for="qs_cpf">CPF:</label>
+			<input type="text" name="qs_cpf" value="">
 		</fieldset>
 		<fieldset>
 			<label for="qs_email">Email:</label>

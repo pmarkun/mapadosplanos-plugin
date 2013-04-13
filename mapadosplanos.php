@@ -55,6 +55,7 @@ function mapadosplanos_install() {
         `id` bigint(20) NOT NULL AUTO_INCREMENT,
         `post_id` bigint(20) NOT NULL,
         `qs_nome` text NOT NULL,
+        `qs_cpf` text NOT NULL,
         `qs_relacao` text NOT NULL,
         `qs_relacao_obs` text NOT NULL,
         `qs_conselho` text NOT NULL,
