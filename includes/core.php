@@ -22,8 +22,29 @@ function mapadosplanos_select_questionarios($post_id) {
 
    $quests = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "mapadosplanos_quest WHERE post_id = " . $post_id);
 
-   // Echo the title of the first scheduled post
-   return $quests;
+   $tmp_attr = array();
+
+$quests_fields = array("post_id", "qs_01", "qs_01_1", "qs_02", "qs_03");
+   for($i = 0; $i < count($quests); ++$i) {
+   		foreach ($quests[$i] as $key => $value) {
+   			if (in_array($key, $quests_fields)) {
+   				$tmp_attr[$key][] = $value;
+   			}
+   			else if ($key == "qs_04") {
+   				$tmp_attr[$key][] = unserialize($value);
+   			}
+   		}
+   }
+   $quest_attr = array();
+   foreach ($tmp_attr as $key => $value) {
+   		if ($key == "qs_04") {
+   			$quest_attr[$key] = $tmp_attr[$key]; //resolver
+   		}
+   		else {
+   			$quest_attr[$key] = array_count_values($tmp_attr[$key]);
+   		}
+   }
+   return $quest_attr;
    }
 
 function mapadosplanos_submit_form($post_id) { 
