@@ -5,14 +5,18 @@ function get_meta_count( $key = '', $value = '', $type = 'post', $status = 'publ
     // Good idea to add your own arg checking here
     if( empty( $key ) )
         return;
-    $r = $wpdb->get_var( $wpdb->prepare( "
-        SELECT COUNT(*) as count FROM {$wpdb->postmeta} pm
+    $p = $wpdb->prepare( "
+        SELECT DISTINCT COUNT(*) as count FROM {$wpdb->postmeta} pm
         LEFT JOIN {$wpdb->posts} p ON p.ID = pm.post_id 
         WHERE pm.meta_key = '%s' 
         AND pm.meta_value = '%s'
         AND p.post_status = '%s' 
-        AND p.post_type = '%s'
-    ", $key, $value, $status, $type ) );
+        AND p.post_type = '%s' 
+        OR pm.meta_key = 'wpcf-a187' 
+        AND pm.meta_value = '%s'
+    ", $key, $value, $status, $type, $value );
+
+    $r = $wpdb->get_var($p);
     return $r;
 }
 
@@ -133,17 +137,17 @@ function mapadosplanos_submit_form($post_id) {
 		<fieldset>
 			<legend>Participa ou já participou de algum conselho</legend>
 			
-			<label for"qs_conselho_1"><input type="radio" name="qs_conselho" value="Sim">Sim</label>
+			<label for="qs_conselho_1"><input type="radio" name="qs_conselho" value="Sim">Sim</label>
 			
-			<label for"qs_conselho_2"><input type="radio" name="qs_conselho" value="Não">Não</label>
+			<label for="qs_conselho_2"><input type="radio" name="qs_conselho" value="Não">Não</label>
 			
-			<label for"qs_conselho_obs">Em caso afirmativo, de qual?</label>
+			<label for="qs_conselho_obs">Em caso afirmativo, de qual?</label>
 			<input type="text" name="qs_conselho_obs" value="">
 		</fieldset>
 		<hr>
 
 
-		<fieldset>
+		<fieldset id="fs_qs_01">
 			<legend>Seu município tem Plano de Educação?</legend>
 			
 			<label for="qs_01_r1"><input type="radio" name="qs_01" value="Sim">Sim</label>
@@ -155,7 +159,7 @@ function mapadosplanos_submit_form($post_id) {
 			<label for="qs_01_r4"><input type="radio" name="qs_01" value="Não sabe">Não sabe</label>
 		</fieldset>
 
-		<fieldset>
+		<fieldset id="fs_qs_01_1">
 			<legend>Se sim ou em elaboração: você participa ou participou do processo de construção do Plano?</legend>
 				
 				<label for="qs_01_1_r1"><input type="radio" name="qs_01_1" value="Sim">Sim</label>
@@ -168,7 +172,7 @@ function mapadosplanos_submit_form($post_id) {
 		</fieldset>
 		<hr>
 
-		<fieldset>
+		<fieldset id="fs_qs_02">
 			<legend>Segundo a sua opinião, em que medida um Plano de Educação pode ajudar a melhorar a educação em seu município?</legend> 
 			<div class="form-info">Dê uma nota de 0 a 5 para cada uma das possibilidades apresentadas abaixo, sendo 5 quando o Plano tem grande capacidade de realizar o que está dito, e 0 quando o Plano não interfere no aspecto mencionado.</div>
 			
@@ -223,7 +227,7 @@ function mapadosplanos_submit_form($post_id) {
 		<hr>
 
 
-		<fieldset>
+		<fieldset id="fs_qs_03">
 			<legend>Escolha três aspectos que, na sua opinião, dificultam a participação da sociedade civil na construção e revisão do Plano de Educação em seu município:</legend>
 			
 			<label for="qs_03_1"><input type="checkbox" name="qs_03[]" value="Grandes distâncias e dificuldade de locomoção no município">Grandes distâncias e dificuldade de locomoção no município</label>
@@ -247,7 +251,7 @@ function mapadosplanos_submit_form($post_id) {
 		</fieldset>
 		<hr>
 
-		<fieldset>
+		<fieldset id="fs_qs_04">
 			<legend>Escolha três aspectos que, na sua opinião, possibilitariam maior participação da sociedade civil na construção e revisão do Plano de Educação em seu município:</legend>
 			
 			<label for="qs_04_1"><input type="checkbox" name="qs_04[]" value="Reuniões na escola e/ou outros espaços públicos existentes na comunidade para discutir o que é um Plano de Educação e por que é importante participar de sua construção">Reuniões na escola e/ou outros espaços públicos existentes na comunidade para discutir o que é um Plano de Educação e por que é importante participar de sua construção</label>
