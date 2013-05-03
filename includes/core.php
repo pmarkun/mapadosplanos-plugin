@@ -59,6 +59,7 @@ function mapadosplanos_submit_form($post_id) {
 	$recaptcha =  wp_load_alloptions();
 	$recaptcha =  unserialize($recaptcha['recaptcha_options']);
 	if(isset($_POST['submit']) and $_POST['action']=='questionario'):
+		echo '<script>window.location.hash = "#parte3";</script>';
 	    //implementar check if recaptcha
   		$resp = recaptcha_check_answer ($recaptcha['private_key'],
                                 $_SERVER["REMOTE_ADDR"],
@@ -93,12 +94,12 @@ function mapadosplanos_submit_form($post_id) {
     		 		$p['qs_01'], $p['qs_01_1'], $p['qs_01_obs'], $p['qs_02'], $p['qs_02_obs'], $p['qs_03'], $p['qs_04'], $p['qs_obs']);
     	
     			$wpdb->query($sql);
+    			
     			echo "<span class='titulo'>Agradecemos a sua participação!</span><br>Seu questionário foi registrado no banco de dados do <b>De Olho nos Planos</b>.<br>Continue monitorando o Plano de Educação do seu município.";
     		}
 		}	
     		?>
 	<?php else: ?>
-	
 		<form method="POST" action="" name="questionario_submit" enctype="multipart/form-data"> 
 		<span class="titulo">Questionário para membros da sociedade civil</span><br><span>Preencha com informações sobre o processo do Plano de Educação no seu município</a></span><hr>
 		
@@ -314,5 +315,12 @@ function mapadosplanos_submit_form($post_id) {
 	add_shortcode( 'mapa_respostas', 'mapadosplanos_count' );
 	add_filter( 'widget_text', 'shortcode_unautop');
 	add_filter('widget_text', 'do_shortcode');
+
+//Adding javascript to admin to conditional form
+function mapadosplanos_questionario_script() {
+        wp_enqueue_script( 'my_custom_script', plugins_url('/js/questionario.js', __FILE__) );
+}
+add_action( 'admin_enqueue_scripts', 'mapadosplanos_questionario_script' );
+
 
 ?>
