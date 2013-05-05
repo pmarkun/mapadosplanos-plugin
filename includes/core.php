@@ -26,30 +26,36 @@ function mapadosplanos_select_questionarios($post_id) {
 
    $quests = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "mapadosplanos_quest WHERE post_id = " . $post_id);
 
-   $tmp_attr = array();
+   $summary = array(
+   		'post_id' => array(),
+   		'qs_01' => array(),
+   		'qs_02' => array(),
+   		'qs_03' => array(),
+   		'qs_04' => array(),
+   		'qs_05' => array()
+   	);
 
-$quests_fields = array("post_id", "qs_01", "qs_01_1", "qs_02", "qs_03");
-   for($i = 0; $i < count($quests); ++$i) {
-   		foreach ($quests[$i] as $key => $value) {
-   			if (in_array($key, $quests_fields)) {
-   				$tmp_attr[$key][] = $value;
-   			}
-   			else if ($key == "qs_04") {
-   				$tmp_attr[$key][] = unserialize($value);
-   			}
+   foreach ($quests as $q) {
+   		$summary[post_id][] = $q->post_id;
+   		$summary[qs_01][] = $q->qs_01;
+   		$summary[qs_02][] = $q->qs_02;
+   		if (array_key_exists('qs_03', $q)) {
+   			$output = array_merge((array) $summary[qs_03], (array) unserialize($q->qs_03));
+   			$summary[qs_03] = $output;
    		}
-   }
-   $quest_attr = array();
-   foreach ($tmp_attr as $key => $value) {
-   		if ($key == "qs_04") {
-   			$quest_attr[$key] = $tmp_attr[$key]; //resolver
+   		if (array_key_exists('qs_04', $q)) {
+   			$output = array_merge((array) $summary[qs_04], (array) unserialize($q->qs_04));
+   			$summary[qs_04] = $output;
    		}
-   		else {
-   			$quest_attr[$key] = array_count_values($tmp_attr[$key]);
-   		}
+   		$summary[qs_05][] = $q->qs_05;
    }
-   return $quest_attr;
-   }
+  	$summary_count = array();
+  	foreach ($summary as $k => $s) {
+  		$summary_count[$k] = array_count_values($s);
+  	}
+  	return $summary_count;
+
+}
 
 function mapadosplanos_submit_form($post_id) { 
 	if (!function_exists('recaptcha_get_html')) {
