@@ -41,7 +41,7 @@ $(document).ready(function () {
 	
 	$("#questionario-plano-em-elaboracao [id^='wpcf-textarea-qs_plano22-']").hide();
 	
-	if ($("#questionario-plano-em-elaboracao input[name='wpcf[qs_plano21]'][value^='Sim'][checked='checked']")[0].checked) {
+	if ($("#questionario-plano-em-elaboracao input[name='wpcf[qs_plano21]'][value^='Sim'][checked='checked']")) {
 		$("#questionario-plano-em-elaboracao [id^='wpcf-textarea-qs_plano22-']").show();
 	}
 
@@ -83,7 +83,7 @@ $(document).ready(function () {
 	
 	$("#questionario-tem-plano [id^='wpcf-textarea-qs_plano22-']").hide();
 	
-	if ($("#questionario-tem-plano input[name='wpcf[qs_plano21]'][value^='Sim'][checked='checked']")[0].checked) {
+	if ($("#questionario-tem-plano input[name='wpcf[qs_plano21]'][value^='Sim'][checked='checked']")) {
 		$("#questionario-tem-plano [id^='wpcf-textarea-qs_plano22-']").show();
 	}
 
