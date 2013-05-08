@@ -107,8 +107,6 @@ function mapadosplanos_submit_form($post_id) {
     		?>
 	<?php else: ?>
 		<form method="POST" action="" name="questionario_submit" enctype="multipart/form-data"> 
-		<span class="titulo">Questionário para membros da sociedade civil</span><br><span>Preencha com informações sobre o processo do Plano de Educação no seu município</a></span><hr>
-		
 		<fieldset>
 			<label for="qs_nome">Nome da pessoa responsável pelo preenchimento:</label>
 			<input type="hidden" name="post_id" value="<?php echo $post_id ?>">
