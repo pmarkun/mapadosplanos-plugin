@@ -2,13 +2,13 @@ var $ = jQuery;
 $(document).ready(function () {
 	console.log("uga buga");
 	//Etapa
-	if ($("#etapa input[name='wpcf[qs_etapa01]'][value='Sim']")[0].checked) {
+	if ($("#etapa input[name='wpcf[qs_etapa01]'][value='Sim'][checked='checked']")) {
 		$("#questionario-tem-plano").show();
 	}
-	else if ($("#etapa input[name='wpcf[qs_etapa01]'][value='Elaboração']")[0].checked) {
+	else if ($("#etapa input[name='wpcf[qs_etapa01]'][value='Elaboração'][checked='checked']")) {
 		$("#questionario-plano-em-elaboracao").show();
 	}
-	else if ($("#etapa input[name='wpcf[qs_etapa01]'][value='Não']")[0].checked) {
+	else if ($("#etapa input[name='wpcf[qs_etapa01]'][value='Não'][checked='checked']")) {
 		$("#questionario-nao-tem-plano").show();
 	}
 
@@ -16,7 +16,7 @@ $(document).ready(function () {
 	$("#questionario-plano-em-elaboracao [id^='wpcf-checkboxes-qs_plano13-']").hide();
 	$("#questionario-plano-em-elaboracao [id^='wpcf-textfield-qs_plano13_other-']").hide();
 
-	if ($("#questionario-plano-em-elaboracao input[name='wpcf[qs_plano12]'][value='Sim']")[0].checked) {
+	if ($("#questionario-plano-em-elaboracao input[name='wpcf[qs_plano12]'][value='Sim'][checked='checked']")) {
 		$("#questionario-plano-em-elaboracao [id^='wpcf-checkboxes-qs_plano13-']").show();
 		$("#questionario-plano-em-elaboracao [id^='wpcf-textfield-qs_plano13_other-']").show();
 	}
