@@ -1,4 +1,16 @@
 <?
+function sum_array_options($questao) {
+  $tmp = 0;
+    foreach ($questao as $n => $times) {
+      if ($n == '') {
+        $n = 0;
+      }
+      $tmp = $tmp + ($n*$times);
+    }
+  return $tmp;
+}
+
+
 function get_meta_count( $key = '', $value = '', $type = 'post', $status = 'publish' ) {
     global $wpdb;
     // Example code only
@@ -26,19 +38,29 @@ function mapadosplanos_select_questionarios($post_id) {
 
    $quests = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "mapadosplanos_quest WHERE post_id = " . $post_id);
 
-   $summary = array(
+$summary = array(
    		'post_id' => array(),
    		'qs_01' => array(),
-   		'qs_02' => array(),
+   		'qs_01_1' => array(),
+   		'qs_02_1' => array(),
+	    'qs_02_2' => array(),
+		'qs_02_3' => array(),
+      	'qs_02_4' => array(),
+      	'qs_02_5' => array(),
    		'qs_03' => array(),
    		'qs_04' => array(),
    		'qs_05' => array()
    	);
 
    foreach ($quests as $q) {
-   		$summary[post_id][] = $q->post_id;
+		$summary[post_id][] = $q->post_id;
    		$summary[qs_01][] = $q->qs_01;
-   		$summary[qs_02][] = $q->qs_02;
+   		$summary[qs_01_1][] = $q->qs_01_1;
+   		$summary[qs_02_1][] = $q->qs_02_1;
+      	$summary[qs_02_2][] = $q->qs_02_2;
+      	$summary[qs_02_3][] = $q->qs_02_3;
+      	$summary[qs_02_4][] = $q->qs_02_4;
+      	$summary[qs_02_5][] = $q->qs_02_5;
    		if (array_key_exists('qs_03', $q)) {
    			$output = array_merge((array) $summary[qs_03], (array) unserialize($q->qs_03));
    			$summary[qs_03] = $output;
@@ -53,8 +75,13 @@ function mapadosplanos_select_questionarios($post_id) {
   	foreach ($summary as $k => $s) {
   		$summary_count[$k] = array_count_values($s);
   	}
+    $summary_count[qs_02_1] = sum_array_options($summary_count[qs_02_1]);
+    $summary_count[qs_02_2] = sum_array_options($summary_count[qs_02_2]);
+    $summary_count[qs_02_3] = sum_array_options($summary_count[qs_02_3]);
+    $summary_count[qs_02_4] = sum_array_options($summary_count[qs_02_4]);
+    $summary_count[qs_02_5] = sum_array_options($summary_count[qs_02_5]);
+    //print_r($summary_count);
   	return $summary_count;
-
 }
 
 function mapadosplanos_submit_form($post_id) { 
@@ -94,10 +121,10 @@ function mapadosplanos_submit_form($post_id) {
 
     			$sql = $wpdb->prepare("INSERT INTO wp_mapadosplanos_quest 
     				(id, post_id, qs_nome, qs_cpf, qs_relacao, qs_relacao_obs, qs_conselho, qs_conselho_obs, qs_email, qs_telefone,
-    		 		qs_01, qs_01_1, qs_01_obs, qs_02, qs_02_obs, qs_03, qs_04, qs_obs) 
-    				values (NULL, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+    		 		qs_01, qs_01_1, qs_01_obs, qs_02_1, qs_02_2, qs_02_3, qs_02_4, qs_02_5, qs_02_obs, qs_03, qs_04, qs_obs) 
+    				values (NULL, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
     		 		$p['post_id'], $p['qs_nome'], $p['qs_cpf'], $p['qs_relacao'], $p['qs_relacao_obs'], $p['qs_conselho'], $p['qs_conselho_obs'], $p['qs_email'], $p['qs_telefone'],
-    		 		$p['qs_01'], $p['qs_01_1'], $p['qs_01_obs'], $p['qs_02'], $p['qs_02_obs'], $p['qs_03'], $p['qs_04'], $p['qs_obs']);
+    		 		$p['qs_01'], $p['qs_01_1'], $p['qs_01_obs'], $p['qs_02_1'], $p['qs_02_2'], $p['qs_02_3'], $p['qs_02_4'], $p['qs_02_5'], $p['qs_02_obs'], $p['qs_03'], $p['qs_04'], $p['qs_obs']);
     	
     			$wpdb->query($sql);
     			
