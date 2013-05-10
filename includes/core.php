@@ -92,7 +92,7 @@ function mapadosplanos_submit_form($post_id) {
 	$recaptcha =  wp_load_alloptions();
 	$recaptcha =  unserialize($recaptcha['recaptcha_options']);
 	if(isset($_POST['submit']) and $_POST['action']=='questionario'):
-		echo '<script>window.location.hash = "#parte3";$("#respostas-sociedade").removeClass("nao-respondido");</script>';
+		echo '<script>window.location.hash = "#parte3";</script>';
 	    //implementar check if recaptcha
   		$resp = recaptcha_check_answer ($recaptcha['private_key'],
                                 $_SERVER["REMOTE_ADDR"],
@@ -128,6 +128,7 @@ function mapadosplanos_submit_form($post_id) {
     	
     			$wpdb->query($sql);
     			
+    			echo '<script>$("#respostas-sociedade").removeClass("nao-respondido");</script>';
     			echo "<span class='titulo'>Agradecemos a sua participação!</span><br>Seu questionário foi registrado no banco de dados do <b>De Olho nos Planos</b>.<br>Continue monitorando o Plano de Educação do seu município.";
     		}
 		}	
@@ -137,15 +138,15 @@ function mapadosplanos_submit_form($post_id) {
 		<fieldset>
 			<label for="qs_nome">Nome da pessoa responsável pelo preenchimento:</label>
 			<input type="hidden" name="post_id" value="<?php echo $post_id ?>">
-			<input type="text" name="qs_nome" value="">
+			<input type="text" name="qs_nome" required>
 		</fieldset>
 		<fieldset>
 			<label for="qs_cpf">CPF:</label>
-			<input type="text" name="qs_cpf" value="">
+			<input type="text" name="qs_cpf" required>
 		</fieldset>
 		<fieldset>
 			<label for="qs_email">Email:</label>
-			<input type="text" name="qs_email" value="">
+			<input type="text" name="qs_email">
 
 			<label for="qs_telefone">Telefone:</label>
 			<input type="text" name="qs_telefone" value="">
@@ -154,7 +155,7 @@ function mapadosplanos_submit_form($post_id) {
 		<fieldset>
 			<legend>Qual sua relação com a educação?</legend>
 		
-			<label for="qs_relacao_1"><input type="radio" name="qs_relacao" value="Pai/mãe ou responsável">Pai/mãe ou responsável</label>
+			<label for="qs_relacao_1"><input type="radio" name="qs_relacao" value="Pai/mãe ou responsável" checked="checked">Pai/mãe ou responsável</label>
 			
 			<label for="qs_relacao_2"><input type="radio" name="qs_relacao" value="Estudante">Estudante</label>
 		
@@ -162,7 +163,9 @@ function mapadosplanos_submit_form($post_id) {
 		
 			<label for="qs_relacao_4"><input type="radio" name="qs_relacao" value="Coordenador(a)">Coordenador(a)</label>
 		
-			<label for="qs_relacao_obs">Outra. Qual?</label>
+			<label for="qs_relacao_5"><input type="radio" name="qs_relacao" value="Outra">Outra</label>
+			
+			<label for="qs_relacao_obs">Se outra, qual?</label>
 			<input type="text" name="qs_relacao_obs" value="">
 		</fieldset>
 		
