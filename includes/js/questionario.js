@@ -36,21 +36,26 @@ $(document).ready(function () {
 
 	//plano em elaboracao qs_plano09
 	$("#questionario-plano-em-elaboracao [id^='wpcf-checkboxes-qs_plano10-']").hide();
+	$("#questionario-plano-em-elaboracao [id^='wpcf-checkboxes-qs_plano11-']").hide();
 
 	if ($("#questionario-plano-em-elaboracao input[name='wpcf[qs_plano09]'][value='Sim']").attr("checked") == "checked") {
 		$("#questionario-plano-em-elaboracao [id^='wpcf-checkboxes-qs_plano10-']").show();
+		$("#questionario-plano-em-elaboracao [id^='wpcf-checkboxes-qs_plano11-']").show();
 	}
 
 	$("#questionario-plano-em-elaboracao input[name='wpcf[qs_plano09]'][value='Sim']").click(function () {
 		$("#questionario-plano-em-elaboracao [id^='wpcf-checkboxes-qs_plano10-']").show();
+		$("#questionario-plano-em-elaboracao [id^='wpcf-checkboxes-qs_plano11-']").show();
 	});
 
 	$("#questionario-plano-em-elaboracao input[name='wpcf[qs_plano09]'][value='Não']").click(function () {
 		$("#questionario-plano-em-elaboracao [id^='wpcf-checkboxes-qs_plano10-']").hide();
+		$("#questionario-plano-em-elaboracao [id^='wpcf-checkboxes-qs_plano11-']").hide();
 	});
 
 	$("#questionario-plano-em-elaboracao input[name='wpcf[qs_plano09]'][value='Não sabe']").click(function () {
 		$("#questionario-plano-em-elaboracao [id^='wpcf-checkboxes-qs_plano10-']").hide();
+		$("#questionario-plano-em-elaboracao [id^='wpcf-checkboxes-qs_plano11-']").hide();
 	});
 
 
@@ -105,21 +110,26 @@ $(document).ready(function () {
 
 	//plano em elaboracao qs_plano09
 	$("#questionario-tem-plano [id^='wpcf-checkboxes-qs_plano10-']").hide();
+	$("#questionario-tem-plano [id^='wpcf-checkboxes-qs_plano11-']").hide();
 
 	if ($("#questionario-tem-plano input[name='wpcf[qs_plano09]'][value='Sim']").attr("checked") == "checked") {
 		$("#questionario-tem-plano [id^='wpcf-checkboxes-qs_plano10-']").show();
+		$("#questionario-tem-plano [id^='wpcf-checkboxes-qs_plano11-']").show();
 	}
 
 	$("#questionario-tem-plano input[name='wpcf[qs_plano09]'][value='Sim']").click(function () {
 		$("#questionario-tem-plano [id^='wpcf-checkboxes-qs_plano10-']").show();
+		$("#questionario-tem-plano [id^='wpcf-checkboxes-qs_plano11-']").show();
 	});
 
 	$("#questionario-tem-plano input[name='wpcf[qs_plano09]'][value='Não']").click(function () {
 		$("#questionario-tem-plano [id^='wpcf-checkboxes-qs_plano10-']").hide();
+		$("#questionario-tem-plano [id^='wpcf-checkboxes-qs_plano11-']").hide();
 	});
 
 	$("#questionario-tem-plano input[name='wpcf[qs_plano09]'][value='Não sabe']").click(function () {
 		$("#questionario-tem-plano [id^='wpcf-checkboxes-qs_plano10-']").hide();
+		$("#questionario-tem-plano [id^='wpcf-checkboxes-qs_plano11-']").hide();
 	});
 
 	//tem plano qs_plano12
