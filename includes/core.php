@@ -129,13 +129,14 @@ function mapadosplanos_submit_form($post_id) {
     			$wpdb->query($sql);
     			
     			echo '<!-- <script>$("#respostas-sociedade").removeClass("nao-respondido");</script> -->';
-    			echo "<span class='titulo'>Agradecemos a sua participação!</span><br>Seu questionário foi registrado no banco de dados do <b>De Olho nos Planos</b>.<br>Continue monitorando o Plano de Educação do seu município.<br/>";
+    			echo "<span class='titulo'>Agradecemos a sua participação!</span><br>Seu questionário foi registrado no banco de dados do <b>De Olho nos Planos</b>.<br>Continue monitorando o Plano de Educação do seu município.<br/><br/>";
 				echo "<span class='titulo'>Clique <a onclick='window.location.reload();' style='cursor: pointer;'>aqui</a> para visualizar as respostas.</span>";
     		}
 		}	
     		?>
 	<?php else: ?>
-		<form method="POST" action="" name="questionario_submit" enctype="multipart/form-data"> 
+		<form method="POST" action="" name="questionario_submit" enctype="multipart/form-data">
+		<span>Este pequeno cadastro foi criado para que possamos conhecê-lo(a) melhor e estimular o debate sobre a construção e revisão de Planos de Educação. Vamos refletir sobre este processo em seu município? Bom trabalho!</span><br><p style="color: #F11D4F;">*campos obrigatórios</p><br> 
 		<fieldset>
 			<label for="qs_nome">Nome da pessoa responsável pelo preenchimento:<span style="color: #F11D4F;">*</style></label>
 			<input type="hidden" name="post_id" value="<?php echo $post_id ?>">
