@@ -137,12 +137,12 @@ function mapadosplanos_submit_form($post_id) {
 	<?php else: ?>
 		<form method="POST" action="" name="questionario_submit" enctype="multipart/form-data"> 
 		<fieldset>
-			<label for="qs_nome">Nome da pessoa responsável pelo preenchimento:</label>
+			<label for="qs_nome">Nome da pessoa responsável pelo preenchimento:<span style="color: #F11D4F;">*</style></label>
 			<input type="hidden" name="post_id" value="<?php echo $post_id ?>">
 			<input type="text" name="qs_nome" required>
 		</fieldset>
 		<fieldset>
-			<label for="qs_cpf">CPF:</label>
+			<label for="qs_cpf">CPF:<span style="color: #F11D4F;">*</span></label>
 			<input type="text" name="qs_cpf" required>
 		</fieldset>
 		<fieldset>
