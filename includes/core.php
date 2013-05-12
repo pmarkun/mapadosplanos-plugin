@@ -128,8 +128,9 @@ function mapadosplanos_submit_form($post_id) {
     	
     			$wpdb->query($sql);
     			
-    			echo '<script>$("#respostas-sociedade").removeClass("nao-respondido");</script>';
-    			echo "<span class='titulo'>Agradecemos a sua participação!</span><br>Seu questionário foi registrado no banco de dados do <b>De Olho nos Planos</b>.<br>Continue monitorando o Plano de Educação do seu município.";
+    			echo '<!-- <script>$("#respostas-sociedade").removeClass("nao-respondido");</script> -->';
+    			echo "<span class='titulo'>Agradecemos a sua participação!</span><br>Seu questionário foi registrado no banco de dados do <b>De Olho nos Planos</b>.<br>Continue monitorando o Plano de Educação do seu município.<br/>";
+				echo "<span class='titulo'>Clique <a onclick='window.location.reload();' style='cursor: pointer;'>aqui</a> para visualizar as respostas.</span>";
     		}
 		}	
     		?>
