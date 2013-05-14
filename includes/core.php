@@ -144,7 +144,7 @@ function mapadosplanos_submit_form($post_id) {
 		</fieldset>
 		<fieldset>
 			<label for="qs_cpf">CPF:<span style="color: #F11D4F;">(Ex:99999999999)*</span></label>
-			<input type="text" name="qs_cpf" required>
+			<input type="text" name="qs_cpf" pattern="\d{11}" title="Digite o CPF, apenas números" required>
 		</fieldset>
 		<fieldset>
 			<label for="qs_email">Email:</label>
