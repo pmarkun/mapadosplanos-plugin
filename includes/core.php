@@ -143,7 +143,7 @@ function mapadosplanos_submit_form($post_id) {
 			<input type="text" name="qs_nome" required>
 		</fieldset>
 		<fieldset>
-			<label for="qs_cpf">CPF:<span style="color: #F11D4F;">*</span></label>
+			<label for="qs_cpf">CPF:<span style="color: #F11D4F;">(Ex:99999999999)*</span></label>
 			<input type="text" name="qs_cpf" required>
 		</fieldset>
 		<fieldset>
